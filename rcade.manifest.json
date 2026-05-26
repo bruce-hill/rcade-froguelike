@@ -1,8 +1,8 @@
 {
   "$schema": "https://rcade.dev/manifest.schema.json",
-  "name": "Pico8",
-  "display_name": "Pico8 Test",
-  "description": "A test of pico8",
+  "name": "Froguelike",
+  "display_name": "Froguelike",
+  "description": "Froguelike: A frog-based roguelike",
   "visibility": "private",
   "authors": [
     {
