@@ -3,7 +3,7 @@
   "name": "Froguelike",
   "display_name": "Froguelike",
   "description": "Froguelike: A frog-based roguelike",
-  "visibility": "private",
+  "visibility": "public",
   "authors": [
     {
       "display_name": "Bruce Hill"
