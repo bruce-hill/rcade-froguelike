@@ -29,7 +29,7 @@
   </head>
 
   <body>
-    <div id="log" style="font-family:monospace;white-space:pre-wrap;background:#111;color:#8f8;padding:10px;font-weight:800;"></div>
+    <div id="log" style="display:none;font-family:monospace;white-space:pre-wrap;background:#111;color:#8f8;padding:10px;font-weight:800;"></div>
     <script>
       const logElem = document.getElementById('log');
       const log = (type, args) => {
@@ -118,25 +118,6 @@
 
         document.body.appendChild(e); // load and run
       }
-
-      /*
-      // key blocker. prevent browser operations while playing cart so that PICO-8 can use those keys e.g. cursors to scroll, ctrl-r to reload
-      document.addEventListener(
-        "keydown",
-        function (event) {
-          if (!p8_is_running) return;
-
-          if (pico8_state.has_focus == 1) {
-            if (
-              [32, 37, 38, 39, 40, 77, 82, 80, 9].indexOf(event.keyCode) > -1
-            ) {
-              if (event.preventDefault) event.preventDefault();
-            }
-          }
-        },
-        { passive: false },
-      );
-      */
     </script>
 
     <div id="p8_playarea" style="display: flex">

@@ -2387,7 +2387,7 @@ var ASM_CONSTS = [
   function () {
     return document.hidden ? 1 : 0;
   },
-  // function () {
+  function () {
   //   if (typeof codo_key_buffer === "undefined") codo_key_buffer = [];
   //   document.addEventListener("keydown", function (e) {
   //     var val = -1;
@@ -2404,16 +2404,16 @@ var ASM_CONSTS = [
   //     var el = document.getElementById("codo_textarea");
   //     codo_key_buffer.push(val);
   //   });
-  // },
-  // function () {
+  },
+  function () {
   //   addEventListener("mousedown", function (event) {
   //     if (typeof pico8_state !== "undefined")
   //       if (event.target.tagName.toLowerCase() != "canvas") {
   //         pico8_state.clicked_outside = true;
   //       }
   //   });
-  // },
-  // function () {
+  },
+  function () {
   //   document.addEventListener("wheel", function (e) {
   //     dx = e.deltaX;
   //     if (dx < 0) dx = -1;
@@ -2426,7 +2426,7 @@ var ASM_CONSTS = [
   //     if (e.deltaMode == 2) dy *= 4;
   //     if (typeof codo_wheel_dy !== "undefined") codo_wheel_dy -= dy;
   //   });
-  // },
+  },
   function ($0) {
     function audio_log(msg) {
       if (window.console && window.console.log) {
