@@ -6321,98 +6321,98 @@ var Browser = {
   lockPointer: undefined,
   resizeCanvas: undefined,
   requestFullscreen: function (lockPointer, resizeCanvas, vrDevice) {
-    lockPointer = false;
-    console.log("forcing lockPointer to false");
-    Browser.lockPointer = lockPointer;
-    Browser.resizeCanvas = resizeCanvas;
-    Browser.vrDevice = vrDevice;
-    if (typeof Browser.lockPointer === "undefined") Browser.lockPointer = false;
-    if (typeof Browser.resizeCanvas === "undefined")
-      Browser.resizeCanvas = false;
-    if (typeof Browser.vrDevice === "undefined") Browser.vrDevice = null;
-    var canvas = Module["canvas"];
-    function fullscreenChange() {
-      Browser.isFullscreen = false;
-      var canvasContainer = canvas.parentNode;
-      if (
-        (document["fullscreenElement"] ||
-          document["mozFullScreenElement"] ||
-          document["msFullscreenElement"] ||
-          document["webkitFullscreenElement"] ||
-          document["webkitCurrentFullScreenElement"]) === canvasContainer
-      ) {
-        canvas.exitFullscreen =
-          document["exitFullscreen"] ||
-          document["cancelFullScreen"] ||
-          document["mozCancelFullScreen"] ||
-          document["msExitFullscreen"] ||
-          document["webkitCancelFullScreen"] ||
-          function () {};
-        canvas.exitFullscreen = canvas.exitFullscreen.bind(document);
-        Browser.isFullscreen = true;
-        if (Browser.resizeCanvas) {
-          Browser.setFullscreenCanvasSize();
-        } else {
-          Browser.updateCanvasDimensions(canvas);
-        }
-      } else {
-        canvasContainer.parentNode.insertBefore(canvas, canvasContainer);
-        canvasContainer.parentNode.removeChild(canvasContainer);
-        if (Browser.resizeCanvas) {
-          Browser.setWindowedCanvasSize();
-        } else {
-          Browser.updateCanvasDimensions(canvas);
-        }
-      }
-      if (Module["onFullScreen"]) Module["onFullScreen"](Browser.isFullscreen);
-      if (Module["onFullscreen"]) Module["onFullscreen"](Browser.isFullscreen);
-    }
-    // if (!Browser.fullscreenHandlersInstalled) {
-      // Browser.fullscreenHandlersInstalled = true;
-      // document.addEventListener("fullscreenchange", fullscreenChange, false);
-      // document.addEventListener("mozfullscreenchange", fullscreenChange, false);
-      // document.addEventListener(
-      //   "webkitfullscreenchange",
-      //   fullscreenChange,
-      //   false,
-      // );
-      // document.addEventListener("MSFullscreenChange", fullscreenChange, false);
+    // lockPointer = false;
+    // console.log("forcing lockPointer to false");
+    // Browser.lockPointer = lockPointer;
+    // Browser.resizeCanvas = resizeCanvas;
+    // Browser.vrDevice = vrDevice;
+    // if (typeof Browser.lockPointer === "undefined") Browser.lockPointer = false;
+    // if (typeof Browser.resizeCanvas === "undefined")
+    //   Browser.resizeCanvas = false;
+    // if (typeof Browser.vrDevice === "undefined") Browser.vrDevice = null;
+    // var canvas = Module["canvas"];
+    // function fullscreenChange() {
+    //   // Browser.isFullscreen = false;
+    //   // var canvasContainer = canvas.parentNode;
+    //   // if (
+    //   //   (document["fullscreenElement"] ||
+    //   //     document["mozFullScreenElement"] ||
+    //   //     document["msFullscreenElement"] ||
+    //   //     document["webkitFullscreenElement"] ||
+    //   //     document["webkitCurrentFullScreenElement"]) === canvasContainer
+    //   // ) {
+    //   //   canvas.exitFullscreen =
+    //   //     document["exitFullscreen"] ||
+    //   //     document["cancelFullScreen"] ||
+    //   //     document["mozCancelFullScreen"] ||
+    //   //     document["msExitFullscreen"] ||
+    //   //     document["webkitCancelFullScreen"] ||
+    //   //     function () {};
+    //   //   canvas.exitFullscreen = canvas.exitFullscreen.bind(document);
+    //   //   Browser.isFullscreen = true;
+    //   //   if (Browser.resizeCanvas) {
+    //   //     Browser.setFullscreenCanvasSize();
+    //   //   } else {
+    //   //     Browser.updateCanvasDimensions(canvas);
+    //   //   }
+    //   // } else {
+    //   //   canvasContainer.parentNode.insertBefore(canvas, canvasContainer);
+    //   //   canvasContainer.parentNode.removeChild(canvasContainer);
+    //   //   if (Browser.resizeCanvas) {
+    //   //     Browser.setWindowedCanvasSize();
+    //   //   } else {
+    //   //     Browser.updateCanvasDimensions(canvas);
+    //   //   }
+    //   // }
+    //   // if (Module["onFullScreen"]) Module["onFullScreen"](Browser.isFullscreen);
+    //   // if (Module["onFullscreen"]) Module["onFullscreen"](Browser.isFullscreen);
     // }
-    var canvasContainer = document.createElement("div");
-    canvas.parentNode.insertBefore(canvasContainer, canvas);
-    canvasContainer.appendChild(canvas);
-    canvasContainer.requestFullscreen =
-      canvasContainer["requestFullscreen"] ||
-      canvasContainer["mozRequestFullScreen"] ||
-      canvasContainer["msRequestFullscreen"] ||
-      (canvasContainer["webkitRequestFullscreen"]
-        ? function () {
-            canvasContainer["webkitRequestFullscreen"](
-              Element["ALLOW_KEYBOARD_INPUT"],
-            );
-          }
-        : null) ||
-      (canvasContainer["webkitRequestFullScreen"]
-        ? function () {
-            canvasContainer["webkitRequestFullScreen"](
-              Element["ALLOW_KEYBOARD_INPUT"],
-            );
-          }
-        : null);
-    if (vrDevice) {
-      canvasContainer.requestFullscreen({ vrDisplay: vrDevice });
-    } else {
-      canvasContainer.requestFullscreen();
-    }
+    // // if (!Browser.fullscreenHandlersInstalled) {
+    //   // Browser.fullscreenHandlersInstalled = true;
+    //   // document.addEventListener("fullscreenchange", fullscreenChange, false);
+    //   // document.addEventListener("mozfullscreenchange", fullscreenChange, false);
+    //   // document.addEventListener(
+    //   //   "webkitfullscreenchange",
+    //   //   fullscreenChange,
+    //   //   false,
+    //   // );
+    //   // document.addEventListener("MSFullscreenChange", fullscreenChange, false);
+    // // }
+    // var canvasContainer = document.createElement("div");
+    // canvas.parentNode.insertBefore(canvasContainer, canvas);
+    // canvasContainer.appendChild(canvas);
+    // // canvasContainer.requestFullscreen =
+    // //   canvasContainer["requestFullscreen"] ||
+    // //   canvasContainer["mozRequestFullScreen"] ||
+    // //   canvasContainer["msRequestFullscreen"] ||
+    // //   (canvasContainer["webkitRequestFullscreen"]
+    // //     ? function () {
+    // //         canvasContainer["webkitRequestFullscreen"](
+    // //           Element["ALLOW_KEYBOARD_INPUT"],
+    // //         );
+    // //       }
+    // //     : null) ||
+    // //   (canvasContainer["webkitRequestFullScreen"]
+    // //     ? function () {
+    // //         canvasContainer["webkitRequestFullScreen"](
+    // //           Element["ALLOW_KEYBOARD_INPUT"],
+    // //         );
+    // //       }
+    // //     : null);
+    // // if (vrDevice) {
+    // //   canvasContainer.requestFullscreen({ vrDisplay: vrDevice });
+    // // } else {
+    // //   canvasContainer.requestFullscreen();
+    // // }
   },
   requestFullScreen: function (lockPointer, resizeCanvas, vrDevice) {
-    err(
-      "Browser.requestFullScreen() is deprecated. Please call Browser.requestFullscreen instead.",
-    );
-    Browser.requestFullScreen = function (lockPointer, resizeCanvas, vrDevice) {
-      return Browser.requestFullscreen(lockPointer, resizeCanvas, vrDevice);
-    };
-    return Browser.requestFullscreen(lockPointer, resizeCanvas, vrDevice);
+    // err(
+    //   "Browser.requestFullScreen() is deprecated. Please call Browser.requestFullscreen instead.",
+    // );
+    // Browser.requestFullScreen = function (lockPointer, resizeCanvas, vrDevice) {
+    //   return Browser.requestFullscreen(lockPointer, resizeCanvas, vrDevice);
+    // };
+    // return Browser.requestFullscreen(lockPointer, resizeCanvas, vrDevice);
   },
   nextRAF: 0,
   fakeRequestAnimationFrame: function (func) {
@@ -6649,13 +6649,13 @@ var Browser = {
   windowedWidth: 0,
   windowedHeight: 0,
   setFullscreenCanvasSize: function () {
-    if (typeof SDL != "undefined") {
-      var flags = HEAPU32[SDL.screen >> 2];
-      flags = flags | 8388608;
-      HEAP32[SDL.screen >> 2] = flags;
-    }
-    Browser.updateCanvasDimensions(Module["canvas"]);
-    Browser.updateResizeListeners();
+    // if (typeof SDL != "undefined") {
+    //   var flags = HEAPU32[SDL.screen >> 2];
+    //   flags = flags | 8388608;
+    //   HEAP32[SDL.screen >> 2] = flags;
+    // }
+    // Browser.updateCanvasDimensions(Module["canvas"]);
+    // Browser.updateResizeListeners();
   },
   setWindowedCanvasSize: function () {
     if (typeof SDL != "undefined") {
@@ -7396,15 +7396,15 @@ var SDL = {
           });
           SDL.DOMButtons[event.button] = 0;
         }
-        if (event.type === "keydown" || event.type === "mousedown") {
-          SDL.canRequestFullscreen = true;
-        } else if (event.type === "keyup" || event.type === "mouseup") {
-          if (SDL.isRequestingFullscreen) {
-            Module["requestFullscreen"](false, true);
-            SDL.isRequestingFullscreen = false;
-          }
-          SDL.canRequestFullscreen = false;
-        }
+        // if (event.type === "keydown" || event.type === "mousedown") {
+        //   SDL.canRequestFullscreen = true;
+        // } else if (event.type === "keyup" || event.type === "mouseup") {
+        //   if (SDL.isRequestingFullscreen) {
+        //     Module["requestFullscreen"](false, true);
+        //     SDL.isRequestingFullscreen = false;
+        //   }
+        //   SDL.canRequestFullscreen = false;
+        // }
         if (event.type === "keypress" && SDL.savedKeydown) {
           SDL.savedKeydown.keypressCharCode = event.charCode;
           SDL.savedKeydown = null;
@@ -9401,18 +9401,18 @@ Module["requestFullScreen"] = function Module_requestFullScreen(
   resizeCanvas,
   vrDevice,
 ) {
-  err(
-    "Module.requestFullScreen is deprecated. Please call Module.requestFullscreen instead.",
-  );
-  Module["requestFullScreen"] = Module["requestFullscreen"];
-  Browser.requestFullScreen(lockPointer, resizeCanvas, vrDevice);
+  // err(
+  //   "Module.requestFullScreen is deprecated. Please call Module.requestFullscreen instead.",
+  // );
+  // Module["requestFullScreen"] = Module["requestFullscreen"];
+  // Browser.requestFullScreen(lockPointer, resizeCanvas, vrDevice);
 };
 Module["requestFullscreen"] = function Module_requestFullscreen(
   lockPointer,
   resizeCanvas,
   vrDevice,
 ) {
-  Browser.requestFullscreen(lockPointer, resizeCanvas, vrDevice);
+  // Browser.requestFullscreen(lockPointer, resizeCanvas, vrDevice);
 };
 Module["requestAnimationFrame"] = function Module_requestAnimationFrame(func) {
   Browser.requestAnimationFrame(func);
