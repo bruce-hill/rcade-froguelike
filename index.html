@@ -25,6 +25,28 @@
       }
     </style>
 
+    
+  </head>
+
+  <body>
+    <div id="log" style="font-family:monospace;white-space:pre-wrap;background:#111;color:#0f0;padding:10px"></div>
+    <script>
+      const logElem = document.getElementById('log');
+      const log = (type, args) => {
+        logElem.innerHTML += `<span style="color:${type==='error'?'#f55':type==='warn'?'#fa0':'#0f0'}">[${type}] ${[...args].map(a=>typeof a==='object'?JSON.stringify(a,null,2):a).join(' ')}</span>\n`;
+      };
+
+      ['log','warn','error','info'].forEach(t => {
+        const orig = console[t];
+        console[t] = (...args) => { log(t, args); orig.apply(console, args); };
+      });
+
+      window.onerror = (msg, src, line, col, err) => {
+        log('error', [`${msg} (${src}:${line}:${col})`]);
+      };
+
+      window.onunhandledrejection = e => log('error', ['Unhandled promise rejection:', e.reason]);
+    </script>
     <script type="text/javascript">
       // When pico8_state is defined, PICO-8 will set .is_paused, .sound_volume and .frame_number each frame
       // (used for determining button icons)
@@ -51,7 +73,6 @@
         var csize = 128;
         while (2*csize <= Math.min(window.innerWidth, window.innerHeight))
           csize *= 2;
-        console.log("Canvas size:", csize);
         canvas.style.width = csize + "px";
         canvas.style.height = csize + "px";
         requestAnimationFrame(p8_update_layout);
@@ -114,9 +135,7 @@
         { passive: false },
       );
     </script>
-  </head>
 
-  <body>
     <div id="p8_playarea" style="display: flex">
       <canvas
         class="emscripten"
