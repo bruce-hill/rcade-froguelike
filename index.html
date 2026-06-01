@@ -23,13 +23,28 @@
         image-rendering: crisp-edges;
         display: block;
       }
+      #log {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        max-height: 50%;
+        overflow: auto;
+        z-index: 10000;
+        font-family: monospace;
+        white-space: pre-wrap;
+        background: rgba(17, 17, 17, 0.9);
+        color: #8f8;
+        padding: 10px;
+        font-weight: 800;
+        pointer-events: none;
+      }
     </style>
-
-    
   </head>
 
   <body>
-    <div id="log" style="display:none;font-family:monospace;white-space:pre-wrap;background:#111;color:#8f8;padding:10px;font-weight:800;"></div>
+    <div id="log"></div>
     <script>
       const logElem = document.getElementById('log');
       const log = (type, args) => {
@@ -42,27 +57,39 @@
       });
 
       window.onerror = (msg, src, line, col, err) => {
+        logElem.style.display = 'block';
         log('error', [`${msg} (${src}:${line}:${col})`]);
       };
 
-      window.onunhandledrejection = e => log('error', ['Unhandled promise rejection:', e.reason]);
+      window.onunhandledrejection = e => {
+        logElem.style.display = 'block';
+        log('error', ['Unhandled promise rejection:', e.reason]);
+      };
       console.log("Starting...");
     </script>
     <script type="text/javascript">
-      // When pico8_state is defined, PICO-8 will set .is_paused, .sound_volume and .frame_number each frame
-      // (used for determining button icons)
-      var pico8_state = [];
-
-      // When pico8_buttons is defined, PICO-8 reads each int as a bitfield holding that player's button states
-      // 0x1 left, 0x2 right, 0x4 up, 0x8 right, 0x10 O, 0x20 X, 0x40 menu
-      var pico8_buttons = [0, 0, 0, 0, 0, 0, 0, 0]; // max 8 players
-
-      // When pico8_gpio is defined, reading and writing to gpio pins will read and write to these values
+      // PICO-8 globals
+      var pico8_state = {
+        is_paused: 0,
+        sound_volume: 100,
+        frame_number: 0,
+        has_focus: 1,
+        show_dpad: 0,
+        request_pointer_lock: 0,
+        require_page_navigate_confirmation: 0,
+        shutdown_requested: 0
+      };
+      var pico8_buttons = [0, 0, 0, 0, 0, 0, 0, 0];
+      var pico8_mouse = [0, 0, 0];
       var pico8_gpio = new Array(128);
+      var p8_touch_detected = false;
+      var codo_key_buffer = [];
+      var codo_wheel_dx = 0;
+      var codo_wheel_dy = 0;
+      var codo_mounted_filesystem = 0;
+      var codo_command = 0;
+      var codo_command_p = 0;
 
-      // When pico8_audio_context context is defined, the html shell (this file) is responsible for creating and managing it.
-      // This makes satisfying browser requirements easier -- e.g. initialising audio from a short script in response to a user action.
-      // Otherwise PICO-8 will try to create and use its own context.
       var pico8_audio_context;
 
       function p8_update_layout() {
@@ -110,13 +137,14 @@
 
         p8_create_audio_context();
 
+        console.log("Loading cart.js...");
         var e = document.createElement("script");
         p8_script = e;
         e.type = "application/javascript";
         e.src = "cart.js";
         e.id = "e_script";
 
-        document.body.appendChild(e); // load and run
+        document.body.appendChild(e);
       }
     </script>
 
@@ -135,7 +163,7 @@
     ></textarea>
 
     <script type="text/javascript">
-      // Helper to ensure p8_run_cart works without the original container/frame wrappers
+      // Mocks for PICO-8 engine
       var p8_frame = {
         offsetWidth: window.innerWidth,
         offsetHeight: window.innerHeight,
@@ -150,7 +178,15 @@
 
       p8_update_layout();
 
-      Module = { canvas: document.getElementById("canvas") };
+      // Pre-initialize Module
+      Module = {
+        canvas: document.getElementById("canvas"),
+        onRuntimeInitialized: function() {
+          console.log("PICO-8 Runtime initialized.");
+        },
+        print: function(text) { console.log(text); },
+        printErr: function(text) { console.error(text); }
+      };
 
       // Auto-start game when AudioContext is ready
       var temp_context = new AudioContext();
@@ -160,6 +196,13 @@
           temp_context.close();
         }
       };
+      // For some environments, we might need a backup start
+      setTimeout(() => {
+          if (!p8_is_running) {
+              console.log("Backup start triggered...");
+              p8_run_cart();
+          }
+      }, 2000);
     </script>
 
     <script type="module">

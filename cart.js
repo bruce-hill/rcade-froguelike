@@ -2213,24 +2213,34 @@ var ASM_CONSTS = [
       }
     }
     mkdir_0("/user_data");
-    FS.mount(IDBFS, {}, "/user_data");
-    FS.syncfs(true, function (err) {
-      if (!err) {
-        console.log("codo: mounted filesystem.\n");
-        codo_mounted_filesystem = 1;
-        mkdir_0("/user_data/cdata");
-        mkdir_0("/user_data/cstore");
-        mkdir_0("/user_data/carts");
-        mkdir_0("/user_data/backup");
-        mkdir_0("/user_data/plates");
-        mkdir_0("/user_data/bbs");
-        mkdir_0("/user_data/bbs/carts");
-        mkdir_0("/user_data/bbs/labels");
-      } else {
-        console.log("** could not mount filesystem\n");
-        console.log(err);
+    var can_mount = false;
+    try { can_mount = !!window.indexedDB; } catch(e) {}
+    if (can_mount) {
+      try {
+        FS.mount(IDBFS, {}, "/user_data");
+        FS.syncfs(true, function (err) {
+          if (!err) {
+            console.log("codo: mounted filesystem.\n");
+            codo_mounted_filesystem = 1;
+            mkdir_0("/user_data/cdata");
+            mkdir_0("/user_data/cstore");
+            mkdir_0("/user_data/carts");
+            mkdir_0("/user_data/backup");
+            mkdir_0("/user_data/plates");
+            mkdir_0("/user_data/bbs");
+            mkdir_0("/user_data/bbs/carts");
+            mkdir_0("/user_data/bbs/labels");
+          } else {
+            console.log("** could not mount filesystem\n");
+            console.log(err);
+          }
+        });
+      } catch (e) {
+        console.log("** could not mount filesystem (IDBFS failed)\n");
       }
-    });
+    } else {
+      console.log("** indexedDB not available, skipping mount\n");
+    }
   },
   function () {
     var val = 0;
@@ -2372,7 +2382,9 @@ var ASM_CONSTS = [
     return val;
   },
   function () {
-    FS.syncfs(false, function (err) {});
+    if (typeof codo_mounted_filesystem !== "undefined" && codo_mounted_filesystem) {
+      FS.syncfs(false, function (err) {});
+    }
   },
   function () {
     var val = 0;
