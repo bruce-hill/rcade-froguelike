@@ -29,7 +29,7 @@
   </head>
 
   <body>
-    <div id="log" style="font-family:monospace;white-space:pre-wrap;background:#111;color:#0f0;padding:10px"></div>
+    <div id="log" style="font-family:monospace;white-space:pre-wrap;background:#111;color:#8f8;padding:10px;font-weight:800;"></div>
     <script>
       const logElem = document.getElementById('log');
       const log = (type, args) => {
@@ -46,6 +46,7 @@
       };
 
       window.onunhandledrejection = e => log('error', ['Unhandled promise rejection:', e.reason]);
+      console.log("Starting...");
     </script>
     <script type="text/javascript">
       // When pico8_state is defined, PICO-8 will set .is_paused, .sound_volume and .frame_number each frame
