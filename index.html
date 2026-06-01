@@ -25,7 +25,12 @@
       }
     </style>
 
+  </head>
+
+  <body>
+    <h1 style='color:white' id='testlog'>Pico8 test</h1>
     <script type="text/javascript">
+      document.getElementById('testlog').innerText += '1';
       // When pico8_state is defined, PICO-8 will set .is_paused, .sound_volume and .frame_number each frame
       // (used for determining button icons)
       var pico8_state = [];
@@ -110,10 +115,8 @@
         },
         { passive: false },
       );
+      document.getElementById('testlog').innerText += '2';
     </script>
-  </head>
-
-  <body>
     <div id="p8_playarea" style="display: flex">
       <canvas
         class="emscripten"
@@ -129,6 +132,7 @@
     ></textarea>
 
     <script type="text/javascript">
+      document.getElementById('testlog').innerText += '3';
       // Helper to ensure p8_run_cart works without the original container/frame wrappers
       var p8_frame = {
         offsetWidth: window.innerWidth,
@@ -154,9 +158,11 @@
           temp_context.close();
         }
       };
+      document.getElementById('testlog').innerText += '4';
     </script>
 
     <script type="module">
+      document.getElementById('testlog').innerText += '5';
       import { PLAYER_1, PLAYER_2 } from "@rcade/plugin-input-classic";
 
       function updateRcade() {
@@ -184,6 +190,7 @@
         requestAnimationFrame(updateRcade);
       }
       updateRcade();
+      document.getElementById('testlog').innerText += '6';
     </script>
   </body>
 </html>
